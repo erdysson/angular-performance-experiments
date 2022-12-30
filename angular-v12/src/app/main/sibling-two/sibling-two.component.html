@@ -1,4 +1,4 @@
 {{ log }}
-<h3>{{ name }} - Parent: {{ parent }}</h3>
+<h3 (click)="onClickHandler($event)">{{ name }} - Parent: {{ parent }}</h3>
 <app-child-one parent="sibling-two"></app-child-one>
 <app-child-two parent="sibling-two"></app-child-two>

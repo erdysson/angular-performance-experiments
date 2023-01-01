@@ -10,11 +10,12 @@ import { UserListItemComponent } from './list/list-item/user-list-item.component
 import { UserListComponent } from './list/user-list.component';
 import { UserComponent } from './user.component';
 import { UserService } from './user.service';
+import { ChangeDetectionLoggerModule } from '../change-detection-logger/change-detection-logger.module';
 
 @NgModule({
     declarations: [UserComponent, UserListComponent, UserListItemComponent, UserDetailsComponent],
     exports: [UserComponent],
     providers: [UserService],
-    imports: [CommonModule, CdkAccordionModule, PostModule, TodoModule],
+    imports: [CommonModule, CdkAccordionModule, PostModule, TodoModule, ChangeDetectionLoggerModule],
 })
 export class UserModule {}

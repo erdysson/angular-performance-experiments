@@ -1,8 +1,3 @@
-<nav>
-    <ul>
-        <li *ngFor="let route of appRoutes">
-            <a class="text text-primary" [routerLink]="route.path" routerLinkActive="active">{{ route.data.name }}</a>
-        </li>
-    </ul>
-</nav>
+<div class="change-detection-log" appChangeDetectionLogger component="app"></div>
+<app-navigation></app-navigation>
 <router-outlet></router-outlet>

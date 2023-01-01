@@ -5,9 +5,10 @@ import { QuoteListItemComponent } from './list/list-item/quote-list-item.compone
 import { QuoteListComponent } from './list/quote-list.component';
 import { QuoteComponent } from './quote.component';
 import { QuoteService } from './quote.service';
+import { ChangeDetectionLoggerModule } from '../change-detection-logger/change-detection-logger.module';
 
 @NgModule({
-    imports: [CommonModule],
+    imports: [CommonModule, ChangeDetectionLoggerModule],
     declarations: [QuoteComponent, QuoteListComponent, QuoteListItemComponent],
     exports: [QuoteComponent],
     providers: [QuoteService],

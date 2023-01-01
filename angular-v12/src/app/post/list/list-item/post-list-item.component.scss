@@ -1,9 +1,8 @@
 :host {
     border-left: solid 3px var(--color-primary);
     display: block;
-    padding: 0 8px;
-
-    margin: 8px 0;
+    margin: var(--margin-container-medium) 0;
+    padding: var(--padding-container-medium);
 
     &:first-child {
         margin-top: 0;
@@ -23,8 +22,8 @@
             color: white;
             display: inline;
             font-size: 12px;
-            margin: 0 4px;
-            padding: 4px;
+            margin: 0 var(--margin-container-small);
+            padding: var(--margin-container-small);
 
             &:first-child {
                 margin-left: 0;

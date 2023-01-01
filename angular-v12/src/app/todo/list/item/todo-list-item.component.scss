@@ -1,7 +1,12 @@
 :host {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    display: block;
+    padding: var(--padding-container-medium);
+
+    .todo-list-item-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
 
     .actions {
         & > * {

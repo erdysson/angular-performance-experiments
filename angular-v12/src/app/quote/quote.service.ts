@@ -14,7 +14,7 @@ export class QuoteService {
 
     constructor(protected readonly http: HttpClient) {}
 
-    getQuotes(limit = 10, skip = 0, fields: Array<keyof User> = []): void {
+    getQuotes(limit = 5, skip = 0, fields: Array<keyof User> = []): void {
         let url = `${this.baseUrl}?limit=${limit}&skip=${skip}`;
 
         if (fields.length > 0) {

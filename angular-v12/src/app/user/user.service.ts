@@ -12,7 +12,7 @@ export class UserService {
 
     constructor(protected readonly http: HttpClient) {}
 
-    getUsers(limit = 10, skip = 0, fields: Array<keyof User> = []): void {
+    getUsers(limit = 5, skip = 0, fields: Array<keyof User> = []): void {
         let url = `${this.baseUrl}?limit=${limit}&skip=${skip}`;
 
         if (fields.length > 0) {

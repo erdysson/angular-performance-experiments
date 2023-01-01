@@ -1,4 +1,37 @@
 :host {
-    border: solid 1px slategray;
     display: block;
+    padding: var(--padding-container-medium);
+
+    ul {
+        list-style: none;
+        padding: var(--padding-container-small);
+
+        li {
+            display: inline-block;
+            margin: 0 var(--margin-container-small);
+
+            a {
+                text-decoration: none;
+
+                &.active {
+                    text-decoration: underline;
+                }
+
+                &:not(.active) {
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+            }
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
 }

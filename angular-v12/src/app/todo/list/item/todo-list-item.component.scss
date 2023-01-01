@@ -1,0 +1,23 @@
+:host {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .actions {
+        & > * {
+            margin: 0 var(--margin-container-small);
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}

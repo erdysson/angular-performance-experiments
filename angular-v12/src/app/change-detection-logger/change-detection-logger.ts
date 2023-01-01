@@ -1,13 +1,10 @@
-import { AfterViewInit, Directive } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Directive } from '@angular/core';
 
 @Directive()
-export abstract class ChangeDetectionLogger implements AfterViewInit {
+export abstract class ChangeDetectionLogger {
     abstract name: string;
 
     abstract pathFromParent: string | null;
-
-    ts$ = new BehaviorSubject(Date.now());
 
     protected readonly changeDetectionCounterKey = Symbol('change_detection_logger');
 
@@ -27,24 +24,6 @@ export abstract class ChangeDetectionLogger implements AfterViewInit {
         const pathFromParent = this.pathFromParent ? `${this.pathFromParent}-` : '';
 
         return `${pathFromParent}[${this.name}]`;
-    }
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            // eslint-disable-next-line no-console
-            console.log(`${this.logHeader}: afterViewInit - setTimeout() resolved`);
-        }, 100);
-    }
-
-    onClickHandler(event: MouseEvent): void {
-        // eslint-disable-next-line no-console
-        console.log(`${this.logHeader} - click handler executed`);
-
-        for (let i = 0; i < 100; i++) {
-            //
-        }
-
-        setTimeout(() => this.ts$.next(Date.now()), 100);
     }
 
     protected increaseAndGetCount(): number {

@@ -1,0 +1,14 @@
+:host {
+    display: block;
+
+    .user-image {
+        display: inline-block;
+        height: 24px;
+        width: 24px;
+    }
+
+    .user-data {
+        margin-left: var(--margin-container-large);
+        width: 200px;
+    }
+}

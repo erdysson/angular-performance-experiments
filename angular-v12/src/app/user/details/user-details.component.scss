@@ -1,0 +1,29 @@
+:host {
+    display: block;
+    padding: var(--padding-container-medium);
+    position: relative;
+
+    .user-data-row {
+        margin: var(--margin-container-medium) 0;
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .user-data-title {
+            display: inline-block;
+            width: 100px;
+        }
+    }
+
+    .user-actions {
+        display: inline-block;
+        position: absolute;
+        right: 0;
+        top: var(--padding-container-medium);
+    }
+}

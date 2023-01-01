@@ -1,0 +1,5 @@
+<span class="text text-secondary" [class.completed]="todo.completed">{{ todo.todo }}</span>
+<span class="actions">
+    <span class="text text-primary pointer" *ngIf="!todo.completed" (click)="completeTodo()">Complete</span>
+    <span class="text text-primary pointer" (click)="deleteTodo()">Delete</span>
+</span>

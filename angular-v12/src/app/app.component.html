@@ -1,9 +1,8 @@
-{{ log }}
-<h3 (click)="onClickHandler($event)">{{ name }}</h3>
-<div>
-    <pre>{{ ts$ | async }}</pre>
-</div>
-<div>
-    <app-sibling-one pathFromParent="[app]"></app-sibling-one>
-    <app-sibling-two pathFromParent="[app]"></app-sibling-two>
-</div>
+<nav>
+    <ul>
+        <li *ngFor="let route of appRoutes">
+            <a class="text text-primary" [routerLink]="route.path" routerLinkActive="active">{{ route.data.name }}</a>
+        </li>
+    </ul>
+</nav>
+<router-outlet></router-outlet>

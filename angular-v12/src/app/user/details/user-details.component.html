@@ -1,0 +1,40 @@
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Age</span>
+    <span class="text text-secondary">{{ user.age }}</span>
+</div>
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Birth date</span>
+    <span class="text text-secondary">{{ user.birthDate }}</span>
+</div>
+
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Phone</span>
+    <span class="text text-secondary">{{ user.phone }}</span>
+</div>
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Address</span>
+    <span class="text text-secondary">{{ user.address.postalCode }} {{ user.address.city }} {{ user.address.state }}">{{ user.address.address }} {{ user.address.postalCode }} {{ user.address.city }} {{ user.address.state }}</span>
+</div>
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Eye color</span>
+    <span class="text text-secondary">{{ user.eyeColor }}</span>
+</div>
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Hair</span>
+    <span class="text text-secondary">{{ user.hair.color }} - {{ user.hair.type }}</span>
+</div>
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Company</span>
+    <span class="text text-secondary">{{ user.company.name }} {{ user.company.department }}</span>
+</div>
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Height</span>
+    <span class="text text-secondary">{{ user.height }}</span>
+</div>
+<div class="user-data-row">
+    <span class="text text-primary title user-data-title">Weight</span>
+    <span class="text text-secondary">{{ user.weight }}</span>
+</div>
+<span class="user-actions">
+    <span class="text text-primary" (click)="deleteUser($event)">Delete</span>
+</span>

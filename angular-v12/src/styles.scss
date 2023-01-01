@@ -1,3 +1,18 @@
+:root {
+    --box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, .3);
+    --box-shadow-hover: 4px 4px 4px 1px rgba(0, 0, 0, .5);
+    --color-primary: cornflowerblue;
+    --color-secondary: dimgrey;
+    --margin-container-small: 4px;
+    --margin-container-medium: 8px;
+    --margin-container-large: 12px;
+    --margin-container-extra-large: 16px;
+    --padding-container-small: 4px;
+    --padding-container-medium: 8px;
+    --padding-container-large: 12px;
+    --padding-container-extra-large: 16px;
+}
+
 /* You can add global styles to this file, and also import other style files */
 body {
   margin: 0;
@@ -6,6 +21,122 @@ body {
 }
 
 * {
-    margin: 4px;
-    padding: 4px;
+    box-sizing: border-box;
+}
+
+.text {
+    font-size: 14px;
+}
+
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-secondary {
+    color: var(--color-secondary);
+}
+
+.title {
+    font-size: 15px;
+    font-weight: bold;
+    padding: var(--padding-container-medium) 0;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.box-shadow {
+    box-shadow: var(--box-shadow);
+
+    &:hover {
+        box-shadow: var(--box-shadow-hover);
+    }
+}
+
+.list-item {
+    display: block;
+    margin: var(--margin-container-medium) 0;
+    padding: var(--margin-container-medium) var(--margin-container-small);
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.actions {
+    margin-left: var(--margin-container-medium);
+
+    & > * {
+        margin: 0 var(--margin-container-small);
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.accordion {
+    display: block;
+    user-select: none;
+}
+
+.accordion-item {
+    display: block;
+    margin-top: var(--margin-container-large);
+}
+
+.accordion-header {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    padding: var(--padding-container-medium);
+    width: 100%;
+}
+
+.accordion-body {
+    padding: var(--padding-container-medium);
+}
+
+.tabs {
+    align-items: center;
+    border-bottom: solid 1px var(--color-primary);
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 var(--padding-container-medium);
+    width: 100%;
+
+    .tab {
+        border: solid 1px var(--color-primary);
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border-bottom: none;
+        color: var(--color-primary);
+        display: flex;
+        padding: var(--padding-container-small);
+
+        &.active,
+        &:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+    }
 }

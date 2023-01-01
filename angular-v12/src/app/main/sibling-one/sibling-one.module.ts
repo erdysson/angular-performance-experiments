@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { ChildOneModule } from '../child/child-one/child-one.module';
@@ -8,6 +9,6 @@ import { SiblingOneComponent } from './sibling-one.component';
 @NgModule({
     declarations: [SiblingOneComponent],
     exports: [SiblingOneComponent],
-    imports: [ChildOneModule, ChildTwoModule],
+    imports: [ChildOneModule, ChildTwoModule, CommonModule],
 })
 export class SiblingOneModule {}

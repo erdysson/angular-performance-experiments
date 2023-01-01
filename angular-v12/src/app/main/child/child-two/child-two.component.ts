@@ -11,5 +11,5 @@ export class ChildTwoComponent extends ChangeDetectionLogger {
     name = 'child-two';
 
     @Input()
-    parent!: string;
+    pathFromParent!: string;
 }

@@ -11,5 +11,5 @@ export class GrandChildOneComponent extends ChangeDetectionLogger {
     name = 'grand-child-one';
 
     @Input()
-    parent!: string;
+    pathFromParent!: string;
 }

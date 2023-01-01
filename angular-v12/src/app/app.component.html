@@ -1,6 +1,9 @@
 {{ log }}
 <h3 (click)="onClickHandler($event)">{{ name }}</h3>
 <div>
-    <app-sibling-one parent="app"></app-sibling-one>
-    <app-sibling-two parent="app"></app-sibling-two>
+    <pre>{{ ts$ | async }}</pre>
+</div>
+<div>
+    <app-sibling-one pathFromParent="[app]"></app-sibling-one>
+    <app-sibling-two pathFromParent="[app]"></app-sibling-two>
 </div>

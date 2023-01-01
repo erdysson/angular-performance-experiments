@@ -11,5 +11,5 @@ export class SiblingOneComponent extends ChangeDetectionLogger {
     name = 'sibling-one';
 
     @Input()
-    parent!: string;
+    pathFromParent!: string;
 }

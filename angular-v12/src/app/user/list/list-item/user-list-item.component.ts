@@ -22,9 +22,6 @@ export class UserListItemComponent implements OnInit {
     @Input()
     user!: User;
 
-    @Input()
-    expanded!: boolean;
-
     constructor(private readonly postService: PostService, private readonly todoService: TodoService) {}
 
     ngOnInit(): void {

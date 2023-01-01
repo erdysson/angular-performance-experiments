@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+import { User } from '../user/user.interface';
+
 import { Quote, QuoteListServerResponse } from './quote.interface';
 
 @Injectable()
@@ -12,10 +14,14 @@ export class QuoteService {
 
     constructor(protected readonly http: HttpClient) {}
 
-    getQuotes(): void {
-        this.http
-            .get<QuoteListServerResponse>(`${this.baseUrl}`)
-            .subscribe((quotes) => this.qoutes$.next(quotes.quotes));
+    getQuotes(limit = 10, skip = 0, fields: Array<keyof User> = []): void {
+        let url = `${this.baseUrl}?limit=${limit}&skip=${skip}`;
+
+        if (fields.length > 0) {
+            url += `select=${fields.join(',')}`;
+        }
+
+        this.http.get<QuoteListServerResponse>(url).subscribe((quotes) => this.qoutes$.next(quotes.quotes));
     }
 
     searchQuotes(query: string): void {

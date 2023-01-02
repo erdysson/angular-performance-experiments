@@ -8,7 +8,7 @@ import { QuoteService } from './quote.service';
     styleUrls: ['./quote.component.scss'],
 })
 export class QuoteComponent implements OnInit {
-    readonly quotes$ = this.quoteService.qoutes$;
+    readonly quotes$ = this.quoteService.quotes$;
 
     constructor(private readonly quoteService: QuoteService) {}
 

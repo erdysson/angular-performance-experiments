@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+import { asObservableSource } from '../utils/as-observable-source';
 import { mergeAndUpdate } from '../utils/merge-and-update';
 
 import { Comment, CommentListServerResponse } from './comment.interface';
@@ -16,7 +17,9 @@ export class CommentService {
 }
 
 export class Comments {
-    readonly comments$ = new BehaviorSubject<Comment[]>([]);
+    readonly #comments$ = new BehaviorSubject<Comment[]>([]);
+
+    readonly comments$: Observable<Comment[]> = asObservableSource(this.#comments$.asObservable(), 'comments');
 
     protected readonly baseUrl = 'https://dummyjson.com/comments';
 
@@ -26,7 +29,7 @@ export class Comments {
         this.http
             .get<CommentListServerResponse>(`${this.baseUrl}/post/${this.postId}`)
             .subscribe((comments) =>
-                this.comments$.next(comments.comments.map((comment) => mergeAndUpdate(comment, {}))),
+                this.#comments$.next(comments.comments.map((comment) => mergeAndUpdate(comment, {}))),
             );
     }
 
@@ -34,7 +37,7 @@ export class Comments {
         this.http
             .get<Comment>(`${this.baseUrl}/${id}`)
             .subscribe((updatedComment) =>
-                this.comments$.next(this.comments$.value.map((comment) => mergeAndUpdate(comment, updatedComment))),
+                this.#comments$.next(this.#comments$.value.map((comment) => mergeAndUpdate(comment, updatedComment))),
             );
     }
 
@@ -42,11 +45,11 @@ export class Comments {
         this.http
             .patch<Comment>(`${this.baseUrl}/${commentId}`, update)
             .subscribe((updatedComment) =>
-                this.comments$.next(this.comments$.value.map((comment) => mergeAndUpdate(comment, updatedComment))),
+                this.#comments$.next(this.#comments$.value.map((comment) => mergeAndUpdate(comment, updatedComment))),
             );
     }
 
     deleteComment(commentId: number): void {
-        this.comments$.next(this.comments$.value.filter((comment) => comment.id !== commentId));
+        this.#comments$.next(this.#comments$.value.filter((comment) => comment.id !== commentId));
     }
 }

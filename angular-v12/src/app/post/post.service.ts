@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+import { asObservableSource } from '../utils/as-observable-source';
 import { mergeAndUpdate } from '../utils/merge-and-update';
 
 import { Post, PostListServerResponse } from './post.interface';
@@ -16,7 +17,9 @@ export class PostService {
 }
 
 export class Posts {
-    readonly posts$ = new BehaviorSubject<Post[]>([]);
+    readonly #posts$ = new BehaviorSubject<Post[]>([]);
+
+    readonly posts$: Observable<Post[]> = asObservableSource(this.#posts$.asObservable(), 'posts');
 
     protected readonly baseUrl = 'https://dummyjson.com/posts';
 
@@ -25,14 +28,14 @@ export class Posts {
     getPosts(): void {
         this.http
             .get<PostListServerResponse>(`${this.baseUrl}/user/${this.userId}`)
-            .subscribe((posts) => this.posts$.next(posts.posts.map((post) => mergeAndUpdate(post, {}))));
+            .subscribe((posts) => this.#posts$.next(posts.posts.map((post) => mergeAndUpdate(post, {}))));
     }
 
     getPost(id: number): void {
         this.http
             .get<Post>(`${this.baseUrl}/${id}`)
             .subscribe((updatedPost) =>
-                this.posts$.next(this.posts$.value.map((post) => mergeAndUpdate(post, updatedPost))),
+                this.#posts$.next(this.#posts$.value.map((post) => mergeAndUpdate(post, updatedPost))),
             );
     }
 
@@ -40,11 +43,11 @@ export class Posts {
         this.http
             .patch<Post>(`${this.baseUrl}/${postId}`, update)
             .subscribe((updatedPost) =>
-                this.posts$.next(this.posts$.value.map((post) => mergeAndUpdate(post, updatedPost))),
+                this.#posts$.next(this.#posts$.value.map((post) => mergeAndUpdate(post, updatedPost))),
             );
     }
 
     deletePost(postId: number): void {
-        this.posts$.next(this.posts$.value.filter((post) => post.id !== postId));
+        this.#posts$.next(this.#posts$.value.filter((post) => post.id !== postId));
     }
 }

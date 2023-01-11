@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+import { asObservableSource } from '../utils/as-observable-source';
 import { mergeAndUpdate } from '../utils/merge-and-update';
 
 import { Todo, TodoListServerResponse } from './todo.interface';
@@ -20,7 +21,9 @@ export class TodoService {
 }
 
 export class Todos {
-    readonly todos$ = new BehaviorSubject<Todo[]>([]);
+    readonly #todos$ = new BehaviorSubject<Todo[]>([]);
+
+    readonly todos$: Observable<Todo[]> = asObservableSource(this.#todos$.asObservable(), `todos-user-${this.userId}`);
 
     protected readonly baseUrl = `https://dummyjson.com/todos`;
 
@@ -29,14 +32,14 @@ export class Todos {
     getTodos(): void {
         this.http
             .get<TodoListServerResponse>(`${this.baseUrl}/user/${this.userId}`)
-            .subscribe((todos) => this.todos$.next(todos.todos.map((todo) => mergeAndUpdate(todo, {}))));
+            .subscribe((todos) => this.#todos$.next(todos.todos.map((todo) => mergeAndUpdate(todo, {}))));
     }
 
     getTodo(id: number): void {
         this.http
             .get<Todo>(`${this.baseUrl}/${id}`)
             .subscribe((updatedTodo) =>
-                this.todos$.next(this.todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
+                this.#todos$.next(this.#todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
             );
     }
 
@@ -44,11 +47,11 @@ export class Todos {
         this.http
             .patch<Todo>(`${this.baseUrl}/${todoId}`, update)
             .subscribe((updatedTodo) =>
-                this.todos$.next(this.todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
+                this.#todos$.next(this.#todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
             );
     }
 
     deleteTodo(todoId: number): void {
-        this.todos$.next(this.todos$.value.filter((todo) => todo.id !== todoId));
+        this.#todos$.next(this.#todos$.value.filter((todo) => todo.id !== todoId));
     }
 }

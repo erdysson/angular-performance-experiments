@@ -19,15 +19,16 @@ npm run serve
 
 #### Step 1
 
-> `*ngFor` with trackBy
+> `bootstrap` with `ngZoneRunCoalescing` & `ngEventCoalescing`
 
 #### Step 2
 
-> `bootstrap` with `ngZoneRunCoalescing` & `ngEventCoalescing`
+> `onPush` change detection
 
 #### Step 3
 
-> `onPush` change detection
+> `*ngFor` with trackBy
+
 
 #### Step 4
 

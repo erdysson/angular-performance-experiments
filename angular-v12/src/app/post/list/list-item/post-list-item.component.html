@@ -4,11 +4,11 @@
 <div class="tags">
     <span class="tag" *ngFor="let tag of post.tags">{{ tag }}</span>
 </div>
-<div class="comments" *ngIf="comments$ | async as comments">
-    <ng-container *ngIf="comments.length > 0">
+<ng-container *ngIf="comments$ | async as comments">
+    <div class="comments" *ngIf="comments.length > 0">
         <div class="text-primary title" (click)="toggle()">{{ toggled ? 'Hide' : 'Show' }} comments ({{ comments.length }})</div>
         <div *ngIf="toggled">
             <app-comment-list [comments]="comments"></app-comment-list>
         </div>
-    </ng-container>
-</div>
+    </div>
+</ng-container>

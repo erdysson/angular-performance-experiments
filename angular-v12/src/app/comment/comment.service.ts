@@ -1,46 +1,52 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+
+import { mergeAndUpdate } from '../utils/merge-and-update';
 
 import { Comment, CommentListServerResponse } from './comment.interface';
 
 @Injectable()
 export class CommentService {
-    protected readonly baseUrl = 'https://dummyjson.com/comments';
-
     constructor(protected readonly http: HttpClient) {}
 
-    getComments(limit = 10, skip = 0, fields: Array<keyof Comment> = []): Observable<CommentListServerResponse> {
-        let url = `${this.baseUrl}?limit=${limit}&skip=${skip}`;
+    getForPost(id: number): Comments {
+        return new Comments(id, this.http);
+    }
+}
 
-        if (fields.length > 0) {
-            url += `select=${fields.join(',')}`;
-        }
+export class Comments {
+    readonly comments$ = new BehaviorSubject<Comment[]>([]);
 
-        return this.http.get<CommentListServerResponse>(url);
+    protected readonly baseUrl = 'https://dummyjson.com/comments';
+
+    constructor(private readonly postId: number, private readonly http: HttpClient) {}
+
+    getComments(): void {
+        this.http
+            .get<CommentListServerResponse>(`${this.baseUrl}/post/${this.postId}`)
+            .subscribe((comments) =>
+                this.comments$.next(comments.comments.map((comment) => mergeAndUpdate(comment, {}))),
+            );
     }
 
-    searchComments(query: string): Observable<CommentListServerResponse> {
-        return this.http.get<CommentListServerResponse>(`${this.baseUrl}/search?q=${query}`);
+    getComment(id: number): void {
+        this.http
+            .get<Comment>(`${this.baseUrl}/${id}`)
+            .subscribe((updatedComment) =>
+                this.comments$.next(this.comments$.value.map((comment) => mergeAndUpdate(comment, updatedComment))),
+            );
     }
 
-    getCommentsByPost(postId: number): Observable<CommentListServerResponse> {
-        return this.http.get<CommentListServerResponse>(`${this.baseUrl}/post/${postId}`);
+    updateComment(commentId: number, update: Partial<Comment>): void {
+        this.http
+            .patch<Comment>(`${this.baseUrl}/${commentId}`, update)
+            .subscribe((updatedComment) =>
+                this.comments$.next(this.comments$.value.map((comment) => mergeAndUpdate(comment, updatedComment))),
+            );
     }
 
-    getComment(id: number): Observable<Comment> {
-        return this.http.get<Comment>(`${this.baseUrl}/${id}`);
-    }
-
-    addComment(comment: Comment): Observable<Comment> {
-        return this.http.post<Comment>(`${this.baseUrl}/add`, comment);
-    }
-
-    updateComment(comment: Comment): Observable<Comment> {
-        return this.http.put<Comment>(`${this.baseUrl}/${comment.id}`, comment);
-    }
-
-    deleteComment(commentId: number): Observable<Comment> {
-        return this.http.delete<Comment>(`${this.baseUrl}/${commentId}`);
+    deleteComment(commentId: number): void {
+        this.comments$.next(this.comments$.value.filter((comment) => comment.id !== commentId));
     }
 }

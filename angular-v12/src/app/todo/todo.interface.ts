@@ -5,6 +5,8 @@ export interface Todo {
     id: number;
     userId: number;
     todo: string;
+
+    lastUpdated?: string;
 }
 
 export interface TodoListServerResponse extends ServerResponse {

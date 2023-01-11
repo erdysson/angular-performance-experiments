@@ -9,5 +9,8 @@ import { Todo } from '../todo.interface';
 })
 export class TodoListComponent {
     @Input()
+    userId!: number;
+
+    @Input()
     todos!: Todo[];
 }

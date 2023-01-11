@@ -9,5 +9,8 @@ import { Post } from '../post.interface';
 })
 export class PostListComponent {
     @Input()
+    userId!: number;
+
+    @Input()
     posts!: Post[];
 }

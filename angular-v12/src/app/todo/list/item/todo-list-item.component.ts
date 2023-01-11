@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { Todo } from '../../todo.interface';
-import { TodoService } from '../../todo.service';
+import { Todos, TodoService } from '../../todo.service';
 
 @Component({
     selector: 'app-todo-list-item',
@@ -9,21 +9,23 @@ import { TodoService } from '../../todo.service';
     styleUrls: ['./todo-list-item.component.scss'],
 })
 export class TodoListItemComponent {
+    readonly todoServiceInstance: Todos;
+
+    @Input()
+    userId!: number;
+
     @Input()
     todo!: Todo;
 
-    constructor(private readonly todoService: TodoService) {}
+    constructor(todoService: TodoService) {
+        this.todoServiceInstance = todoService.getForUser(this.userId);
+    }
 
     completeTodo(): void {
-        this.todoService.updateTodo({ id: this.todo.id, completed: true }).subscribe((todo) => {
-            this.todo.completed = true;
-        });
+        this.todoServiceInstance.updateTodo(this.todo.id, { completed: true });
     }
 
     deleteTodo(): void {
-        this.todoService.deleteTodo(this.todo.id).subscribe((todo) => {
-            // eslint-disable-next-line no-console
-            console.log('deleted todo', todo);
-        });
+        this.todoServiceInstance.deleteTodo(this.todo.id);
     }
 }

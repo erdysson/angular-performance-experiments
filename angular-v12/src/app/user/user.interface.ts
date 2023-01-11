@@ -60,6 +60,7 @@ export interface User {
     university: string;
     userAgent: string;
     weight: number;
+    lastUpdated?: string;
 }
 
 export interface UserListServerResponse extends ServerResponse {

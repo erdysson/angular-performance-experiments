@@ -7,6 +7,7 @@ export interface Post {
     tags: string[];
     reactions: number;
     userId: number;
+    lastUpdated?: string;
 }
 
 export interface PostListServerResponse extends ServerResponse {

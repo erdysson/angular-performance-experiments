@@ -16,6 +16,6 @@ export class UserDetailsComponent {
 
     deleteUser(event: MouseEvent): void {
         event.stopPropagation();
-        this.userService.deleteUser(this.user.id);
+        this.userService.delete(this.user.id);
     }
 }

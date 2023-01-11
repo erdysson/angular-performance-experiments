@@ -1,15 +1,65 @@
 :host {
+    border: solid 1px var(--color-primary);
+    cursor: pointer;
     display: block;
-    padding: var(--padding-container-medium);
 
-    .user-image {
-        display: inline-block;
-        height: 24px;
-        width: 24px;
+    .user-wrapper {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        .user-data {
+            align-items: center;
+            display: flex;
+            justify-content: flex-start;
+
+            &-image {
+                display: flex;
+                height: 24px;
+                width: 24px;
+                position: relative;
+                top: -5px;
+            }
+
+            &-item {
+                display: flex;
+                margin-left: var(--margin-container-large);
+            }
+        }
+
+        .user-actions {
+            align-items: center;
+            display: flex;
+
+            & > * {
+                cursor: pointer;
+                display: flex;
+                margin: 0 var(--margin-container-small);
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
     }
 
-    .user-data {
-        margin-left: var(--margin-container-large);
-        width: 200px;
+    .tabs {
+        align-items: center;
+        display: flex;
+        justify-content: flex-start;
+        padding: 0 var(--padding-container-medium);
+        width: 100%;
+
+        .tab {
+            color: var(--color-primary);
+            display: flex;
+            padding: var(--padding-container-small);
+
+            &.active,
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 }

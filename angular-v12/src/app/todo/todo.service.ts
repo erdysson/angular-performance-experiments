@@ -1,48 +1,54 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+
+import { mergeAndUpdate } from '../utils/merge-and-update';
 
 import { Todo, TodoListServerResponse } from './todo.interface';
 
 @Injectable()
 export class TodoService {
-    protected baseUrl = 'https://dummyjson.com/todos';
+    protected readonly instances: { [key: number]: Todos } = {};
 
-    constructor(protected readonly http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
-    getTodos(limit = 10, skip = 0, fields: Array<keyof Todo> = []): Observable<TodoListServerResponse> {
-        let url = `${this.baseUrl}?limit=${limit}&skip=${skip}`;
+    getForUser(id: number): Todos {
+        this.instances[id] = new Todos(id, this.http);
 
-        if (fields.length > 0) {
-            url += `select=${fields.join(',')}`;
-        }
+        return this.instances[id];
+    }
+}
 
-        return this.http.get<TodoListServerResponse>(url);
+export class Todos {
+    readonly todos$ = new BehaviorSubject<Todo[]>([]);
+
+    protected readonly baseUrl = `https://dummyjson.com/todos`;
+
+    constructor(private readonly userId: number, private readonly http: HttpClient) {}
+
+    getTodos(): void {
+        this.http
+            .get<TodoListServerResponse>(`${this.baseUrl}/user/${this.userId}`)
+            .subscribe((todos) => this.todos$.next(todos.todos.map((todo) => mergeAndUpdate(todo, {}))));
     }
 
-    searchTodos(query: string): Observable<TodoListServerResponse> {
-        return this.http.get<TodoListServerResponse>(`${this.baseUrl}/search?q=${query}`);
+    getTodo(id: number): void {
+        this.http
+            .get<Todo>(`${this.baseUrl}/${id}`)
+            .subscribe((updatedTodo) =>
+                this.todos$.next(this.todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
+            );
     }
 
-    getTodosByUser(userId: number): Observable<TodoListServerResponse> {
-        return this.http.get<TodoListServerResponse>(`${this.baseUrl}/user/${userId}`);
+    updateTodo(todoId: number, update: Partial<Todo>): void {
+        this.http
+            .patch<Todo>(`${this.baseUrl}/${todoId}`, update)
+            .subscribe((updatedTodo) =>
+                this.todos$.next(this.todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
+            );
     }
 
-    getTodo(id: number): Observable<Todo> {
-        return this.http.get<Todo>(`${this.baseUrl}/${id}`);
-    }
-
-    addTodo(todo: Todo): Observable<Todo> {
-        return this.http.post<Todo>(`${this.baseUrl}/add`, todo);
-    }
-
-    updateTodo(todo: Partial<Todo>): Observable<Todo> {
-        const { id, ...updates } = todo;
-
-        return this.http.patch<Todo>(`${this.baseUrl}/${id}`, updates);
-    }
-
-    deleteTodo(todoId: number): Observable<Todo> {
-        return this.http.delete<Todo>(`${this.baseUrl}/${todoId}`);
+    deleteTodo(todoId: number): void {
+        this.todos$.next(this.todos$.value.filter((todo) => todo.id !== todoId));
     }
 }

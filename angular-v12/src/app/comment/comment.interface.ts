@@ -10,6 +10,8 @@ export interface Comment {
     id: number;
     postId: number;
     user: CommentUser;
+
+    lastUpdated?: string;
 }
 
 export interface CommentListServerResponse extends ServerResponse {

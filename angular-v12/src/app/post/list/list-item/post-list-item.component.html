@@ -4,26 +4,11 @@
 <div class="tags">
     <span class="tag" *ngFor="let tag of post.tags">{{ tag }}</span>
 </div>
-<div class="text-primary comments" *ngIf="comments$ | async as comments">
-    <cdk-accordion class="accordion">
-        <cdk-accordion-item
-            #accordionItem="cdkAccordionItem"
-            class="accordion-item"
-            role="button"
-            tabindex="0"
-            [attr.id]="'accordion-header' + post.id"
-            [attr.aria-expanded]="accordionItem.expanded"
-            [attr.aria-controls]="'accordion-body-' + post.id">
-        </cdk-accordion-item>
-        <div class="accordion-header text-secondary" (click)="accordionItem.toggle()">
-            <div class="title">{{ accordionItem.expanded ? 'Hide' : 'Show' }} comments ({{ comments.length }})</div>
-        </div>
-        <div class="accordion-body"
-             role="region"
-             [style.display]="accordionItem.expanded ? '' : 'none'"
-             [attr.id]="'accordion-body-' + post.id"
-             [attr.aria-labelledby]="'accordion-header-' + post.id">
+<div class="comments" *ngIf="comments$ | async as comments">
+    <ng-container *ngIf="comments.length > 0">
+        <div class="text-primary title" (click)="toggle()">{{ toggled ? 'Hide' : 'Show' }} comments ({{ comments.length }})</div>
+        <div *ngIf="toggled">
             <app-comment-list [comments]="comments"></app-comment-list>
         </div>
-    </cdk-accordion>
+    </ng-container>
 </div>

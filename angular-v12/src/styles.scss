@@ -23,6 +23,9 @@ body {
 
 * {
     box-sizing: border-box;
+    margin: var(--margin-container-small);
+    padding: var(--margin-container-small);
+    //border: solid 1px var(--color-secondary);
 }
 
 .text {
@@ -37,92 +40,8 @@ body {
     color: var(--color-secondary);
 }
 
-.title {
-    font-size: 15px;
-    font-weight: bold;
-    padding: var(--padding-container-medium) 0;
-}
-
-.pointer {
-    cursor: pointer;
-}
-
-.ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.box-shadow {
-    box-shadow: var(--box-shadow);
-
-    &:hover {
-        box-shadow: var(--box-shadow-hover);
-    }
-}
-
-.list-item {
-    display: block;
-    margin: var(--margin-container-medium) 0;
-    padding: var(--margin-container-medium) var(--margin-container-small);
-
-    &:first-child {
-        margin-top: 0;
-    }
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-}
-
-.accordion {
-    display: block;
-    user-select: none;
-}
-
-.accordion-item {
-    display: block;
-    margin-top: var(--margin-container-large);
-}
-
-.accordion-header {
-    align-content: center;
-    align-items: center;
-    display: flex;
-    padding: var(--padding-container-medium);
-    width: 100%;
-}
-
-.accordion-body {
-    padding: var(--padding-container-medium);
-}
-
-.tabs {
-    align-items: center;
-    border-bottom: solid 1px var(--color-primary);
-    display: flex;
-    justify-content: flex-start;
-    padding: 0 var(--padding-container-medium);
-    width: 100%;
-
-    .tab {
-        border: solid 1px var(--color-primary);
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-        border-bottom: none;
-        color: var(--color-primary);
-        display: flex;
-        padding: var(--padding-container-small);
-
-        &.active,
-        &:hover {
-            background-color: var(--color-primary);
-            color: white;
-        }
-    }
-}
-
 .change-detection-log {
     color: var(--color-error);
     font-size: 12px;
+    margin: var(--margin-container-medium) 0;
 }

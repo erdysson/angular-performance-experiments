@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Comment } from '../../../comment/comment.interface';
-import { CommentService } from '../../../comment/comment.service';
+import { Comments, CommentService } from '../../../comment/comment.service';
 import { Post } from '../../post.interface';
 
 @Component({
@@ -11,7 +11,14 @@ import { Post } from '../../post.interface';
     styleUrls: ['./post-list-item.component.scss'],
 })
 export class PostListItemComponent implements OnInit {
-    comments$ = new BehaviorSubject<Comment[]>([]);
+    postCommentService!: Comments;
+
+    comments$!: Observable<Comment[]>;
+
+    toggled = false;
+
+    @Input()
+    userId!: number;
 
     @Input()
     post!: Post;
@@ -19,8 +26,13 @@ export class PostListItemComponent implements OnInit {
     constructor(private readonly commentService: CommentService) {}
 
     ngOnInit(): void {
-        this.commentService.getCommentsByPost(this.post.id).subscribe((comments) => {
-            this.comments$.next(comments.comments);
-        });
+        this.postCommentService = this.commentService.getForPost(this.post.id);
+        this.comments$ = this.postCommentService.comments$;
+
+        this.postCommentService.getComments();
+    }
+
+    toggle(): void {
+        this.toggled = !this.toggled;
     }
 }

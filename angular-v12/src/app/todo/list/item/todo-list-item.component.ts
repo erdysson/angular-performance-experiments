@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { Todo } from '../../todo.interface';
 import { Todos, TodoService } from '../../todo.service';
@@ -8,7 +8,7 @@ import { Todos, TodoService } from '../../todo.service';
     templateUrl: './todo-list-item.component.html',
     styleUrls: ['./todo-list-item.component.scss'],
 })
-export class TodoListItemComponent {
+export class TodoListItemComponent implements OnInit, OnChanges, OnDestroy {
     readonly todoServiceInstance: Todos;
 
     @Input()
@@ -19,6 +19,30 @@ export class TodoListItemComponent {
 
     constructor(todoService: TodoService) {
         this.todoServiceInstance = todoService.getForUser(this.userId);
+    }
+
+    ngOnInit(): void {
+        // eslint-disable-next-line no-console
+        console.log(`todo-list-item:onInit`);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        for (const change of Object.keys(changes)) {
+            const object = changes[change];
+            // eslint-disable-next-line no-console
+            console.log(
+                `todo-list-item:onChanges: [${change}]`,
+                'has changed from',
+                object.previousValue,
+                'to',
+                object.currentValue,
+            );
+        }
+    }
+
+    ngOnDestroy(): void {
+        // eslint-disable-next-line no-console
+        console.log(`todo-list-item:onDestroy`);
     }
 
     completeTodo(): void {

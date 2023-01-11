@@ -1,3 +1,3 @@
 <div class="change-detection-log" appChangeDetectionLogger component="user-list"></div>
 <div class="text-secondary">User list</div>
-<app-user-list-item *ngFor="let user of users" [user]="user"></app-user-list-item>
+<app-user-list-item *ngFor="let user of users$ | async" [user]="user"></app-user-list-item>

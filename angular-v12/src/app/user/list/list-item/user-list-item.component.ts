@@ -37,7 +37,8 @@ export class UserListItemComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         // eslint-disable-next-line no-console
-        console.log('user-list-item is initialised');
+        console.log('user-list-item:onInit');
+
         this.userPostService = this.postService.getForUser(this.user.id);
         this.userTodoService = this.todoService.getForUser(this.user.id);
 
@@ -53,7 +54,7 @@ export class UserListItemComponent implements OnInit, OnChanges, OnDestroy {
             const object = changes[change];
             // eslint-disable-next-line no-console
             console.log(
-                `user-list-item: [${change}]`,
+                `user-list-item:onChanges: [${change}]`,
                 'has changed from',
                 object.previousValue,
                 'to',
@@ -64,7 +65,7 @@ export class UserListItemComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy(): void {
         // eslint-disable-next-line no-console
-        console.log('user-list-item is destroyed!');
+        console.log('user-list-item:onDestroy');
     }
 
     switchTab(tab: string): void {

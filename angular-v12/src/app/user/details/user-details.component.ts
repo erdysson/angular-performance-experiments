@@ -1,21 +1,37 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { User } from '../user.interface';
-import { UserService } from '../user.service';
 
 @Component({
     selector: 'app-user-details',
     templateUrl: './user-details.component.html',
     styleUrls: ['./user-details.component.scss'],
 })
-export class UserDetailsComponent {
+export class UserDetailsComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
     user!: User;
 
-    constructor(private readonly userService: UserService) {}
+    ngOnInit(): void {
+        // eslint-disable-next-line no-console
+        console.log(`user-details:onInit`);
+    }
 
-    deleteUser(event: MouseEvent): void {
-        event.stopPropagation();
-        this.userService.delete(this.user.id);
+    ngOnChanges(changes: SimpleChanges): void {
+        for (const change of Object.keys(changes)) {
+            const object = changes[change];
+            // eslint-disable-next-line no-console
+            console.log(
+                `user-details:onChanges: [${change}]`,
+                'has changed from',
+                object.previousValue,
+                'to',
+                object.currentValue,
+            );
+        }
+    }
+
+    ngOnDestroy(): void {
+        // eslint-disable-next-line no-console
+        console.log(`user-details:onDestroy`);
     }
 }

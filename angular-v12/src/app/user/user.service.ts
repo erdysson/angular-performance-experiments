@@ -17,7 +17,7 @@ export class UserService {
 
     constructor(protected readonly http: HttpClient) {}
 
-    getUsers(limit = 10, skip = 0): void {
+    getUsers(limit = 3, skip = 0): void {
         this.http
             .get<UserListServerResponse>(`${this.baseUrl}?limit=${limit}&skip=${skip}`)
             .subscribe((users) => this.#users$.next(users.users.map((user) => mergeAndUpdate(user, {}))));

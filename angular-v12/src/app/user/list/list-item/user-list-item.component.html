@@ -2,6 +2,7 @@
 <div class="user-wrapper" (click)="toggle()">
     <div class="user-data text-secondary">
         <img class="user-data-image" [src]="user.image">
+        <span class="text ellipsis user-data-item">{{ user.id }}</span>
         <span class="text ellipsis user-data-item">{{ user.firstName }}</span>
         <span class="text ellipsis user-data-item">{{ user.lastName }}</span>
         <span class="text ellipsis user-data-item">{{ user.lastUpdated }}</span>
@@ -19,7 +20,7 @@
     </div>
     <div>
         <app-user-details *ngIf="tab === 'details'" [user]="user"></app-user-details>
-        <app-post-list *ngIf="tab === 'posts'" [userId]="user.id" [posts]="posts$ | async"></app-post-list>
-        <app-todo-list *ngIf="tab === 'todos'" [userId]="user.id" [todos]="todos$ | async"></app-todo-list>
+        <app-post-list *ngIf="tab === 'posts'" [user]="user"></app-post-list>
+        <app-todo-list *ngIf="tab === 'todos'" [user]="user"></app-todo-list>
     </div>
 </div>

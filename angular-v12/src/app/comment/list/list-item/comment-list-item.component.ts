@@ -1,37 +1,47 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
+import { ComponentLifecycleLogger } from '../../../utils/component-lifecycle-logger';
 import { Comment } from '../../comment.interface';
+import { Comments, CommentService } from '../../comment.service';
 
 @Component({
     selector: 'app-comment-list-item',
     templateUrl: './comment-list-item.component.html',
     styleUrls: ['./comment-list-item.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentListItemComponent implements OnInit, OnChanges, OnDestroy {
+export class CommentListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
+    postCommentService!: Comments;
+
+    @Input()
+    postId!: number;
+
     @Input()
     comment!: Comment;
 
+    constructor(private readonly commentService: CommentService) {
+        super();
+    }
+
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`comment-list-item:onInit`);
+        this.init();
+
+        this.postCommentService = this.commentService.getForPost(this.postId);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `comment-list-item:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`comment-list-item:onDestroy`);
+        this.destroy();
+    }
+
+    refresh(): void {
+        this.postCommentService.getComment(this.comment.id);
+    }
+
+    delete(): void {
+        this.postCommentService.deleteComment(this.comment.id);
     }
 }

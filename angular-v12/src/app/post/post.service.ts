@@ -9,17 +9,23 @@ import { Post, PostListServerResponse } from './post.interface';
 
 @Injectable()
 export class PostService {
+    protected readonly instances: Partial<{ [key: number]: Posts }> = {};
+
     constructor(protected readonly http: HttpClient) {}
 
     getForUser(id: number): Posts {
-        return new Posts(id, this.http);
+        if (!this.instances[id]) {
+            this.instances[id] = new Posts(id, this.http);
+        }
+
+        return this.instances[id] as Posts;
     }
 }
 
 export class Posts {
     readonly #posts$ = new BehaviorSubject<Post[]>([]);
 
-    readonly posts$: Observable<Post[]> = asObservableSource(this.#posts$.asObservable(), 'posts');
+    readonly posts$: Observable<Post[]> = asObservableSource(this.#posts$, 'posts');
 
     protected readonly baseUrl = 'https://dummyjson.com/posts';
 

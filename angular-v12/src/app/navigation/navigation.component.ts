@@ -1,23 +1,23 @@
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+
+import { ComponentLifecycleLogger } from '../utils/component-lifecycle-logger';
 
 @Component({
     selector: 'app-navigation',
     templateUrl: './navigation.component.html',
     styleUrls: ['./navigation.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationComponent implements OnInit, OnChanges, OnDestroy {
+export class NavigationComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`navigation:onInit`);
+        this.init();
     }
 
     ngOnChanges(): void {
-        // eslint-disable-next-line no-console
-        console.log(`navigation:onChanges`);
+        this.changes({});
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`navigation:onDestroy`);
+        this.destroy();
     }
 }

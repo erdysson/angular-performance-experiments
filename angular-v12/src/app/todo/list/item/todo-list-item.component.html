@@ -1,6 +1,6 @@
 <div class="change-detection-log" appChangeDetectionLogger component="todo-list-item"></div>
 <div class="todo-list-item-wrapper">
-    <span class="text text-secondary" [class.completed]="todo.completed">{{ todo.todo }}</span>
+    <span class="text text-secondary" [class.completed]="todo.completed">{{ todo.id }} {{ todo.todo }}</span>
     <span class="actions">
         <span class="text text-primary pointer" *ngIf="!todo.completed" (click)="completeTodo()">Complete</span>
         <span class="text text-primary pointer" (click)="deleteTodo()">Delete</span>

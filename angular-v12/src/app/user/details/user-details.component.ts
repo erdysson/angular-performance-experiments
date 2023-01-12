@@ -1,37 +1,27 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
+import { ComponentLifecycleLogger } from '../../utils/component-lifecycle-logger';
 import { User } from '../user.interface';
 
 @Component({
     selector: 'app-user-details',
     templateUrl: './user-details.component.html',
     styleUrls: ['./user-details.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserDetailsComponent implements OnInit, OnChanges, OnDestroy {
+export class UserDetailsComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     @Input()
     user!: User;
 
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`user-details:onInit`);
+        this.init();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `user-details:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`user-details:onDestroy`);
+        this.destroy();
     }
 }

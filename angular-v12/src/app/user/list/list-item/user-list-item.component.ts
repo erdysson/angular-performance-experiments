@@ -1,10 +1,6 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
-import { Post } from '../../../post/post.interface';
-import { Posts, PostService } from '../../../post/post.service';
-import { Todo } from '../../../todo/todo.interface';
-import { Todos, TodoService } from '../../../todo/todo.service';
+import { ComponentLifecycleLogger } from '../../../utils/component-lifecycle-logger';
 import { User } from '../../user.interface';
 import { UserService } from '../../user.service';
 
@@ -12,60 +8,30 @@ import { UserService } from '../../user.service';
     selector: 'app-user-list-item',
     templateUrl: './user-list-item.component.html',
     styleUrls: ['./user-list-item.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserListItemComponent implements OnInit, OnChanges, OnDestroy {
+export class UserListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     tab = 'details';
 
     toggled = false;
 
-    userPostService!: Posts;
-
-    userTodoService!: Todos;
-
-    posts$!: Observable<Post[]>;
-
-    todos$!: Observable<Todo[]>;
-
     @Input()
     user!: User;
 
-    constructor(
-        private readonly postService: PostService,
-        private readonly todoService: TodoService,
-        private readonly userService: UserService,
-    ) {}
+    constructor(private readonly userService: UserService) {
+        super();
+    }
 
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log('user-list-item:onInit');
-
-        this.userPostService = this.postService.getForUser(this.user.id);
-        this.userTodoService = this.todoService.getForUser(this.user.id);
-
-        this.posts$ = this.userPostService.posts$;
-        this.todos$ = this.userTodoService.todos$;
-
-        this.userPostService.getPosts();
-        this.userTodoService.getTodos();
+        this.init();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `user-list-item:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log('user-list-item:onDestroy');
+        this.destroy();
     }
 
     switchTab(tab: string): void {
@@ -83,6 +49,6 @@ export class UserListItemComponent implements OnInit, OnChanges, OnDestroy {
 
     delete(event: MouseEvent): void {
         event.stopPropagation();
-        this.userService.delete(this.user.id);
+        this.userService.deleteUser(this.user.id);
     }
 }

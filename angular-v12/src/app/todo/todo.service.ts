@@ -9,35 +9,39 @@ import { Todo, TodoListServerResponse } from './todo.interface';
 
 @Injectable()
 export class TodoService {
-    protected readonly instances: { [key: number]: Todos } = {};
+    protected readonly instances: Partial<{ [key: number]: Todos }> = {};
 
     constructor(private readonly http: HttpClient) {}
 
     getForUser(id: number): Todos {
-        this.instances[id] = new Todos(id, this.http);
+        if (!this.instances[id]) {
+            this.instances[id] = new Todos(id, this.http);
+        }
 
-        return this.instances[id];
+        return this.instances[id] as Todos;
     }
 }
 
 export class Todos {
     readonly #todos$ = new BehaviorSubject<Todo[]>([]);
 
-    readonly todos$: Observable<Todo[]> = asObservableSource(this.#todos$.asObservable(), `todos-user-${this.userId}`);
+    readonly todos$: Observable<Todo[]> = asObservableSource(this.#todos$, `todos-user-${this.userId}`);
 
-    protected readonly baseUrl = `https://dummyjson.com/todos`;
+    protected readonly todosBaseUrl = `https://dummyjson.com/todos`;
+
+    protected readonly userTodosBaseUrl = `https://dummyjson.com/users/${this.userId}/todos`;
 
     constructor(private readonly userId: number, private readonly http: HttpClient) {}
 
     getTodos(): void {
         this.http
-            .get<TodoListServerResponse>(`${this.baseUrl}/user/${this.userId}`)
+            .get<TodoListServerResponse>(this.userTodosBaseUrl)
             .subscribe((todos) => this.#todos$.next(todos.todos.map((todo) => mergeAndUpdate(todo, {}))));
     }
 
     getTodo(id: number): void {
         this.http
-            .get<Todo>(`${this.baseUrl}/${id}`)
+            .get<Todo>(`${this.todosBaseUrl}/${id}`)
             .subscribe((updatedTodo) =>
                 this.#todos$.next(this.#todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
             );
@@ -45,8 +49,8 @@ export class Todos {
 
     updateTodo(todoId: number, update: Partial<Todo>): void {
         this.http
-            .patch<Todo>(`${this.baseUrl}/${todoId}`, update)
-            .subscribe((updatedTodo) =>
+            .patch<Todo>(`${this.todosBaseUrl}/${todoId}`, update)
+            .subscribe((updatedTodo: Partial<Todo>) =>
                 this.#todos$.next(this.#todos$.value.map((todo) => mergeAndUpdate(todo, updatedTodo))),
             );
     }

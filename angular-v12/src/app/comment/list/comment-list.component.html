@@ -1,2 +1,15 @@
 <div class="change-detection-log" appChangeDetectionLogger component="comment-list"></div>
-<app-comment-list-item class="list-item" *ngFor="let comment of comments" [comment]="comment"></app-comment-list-item>
+<ng-container *ngIf="comments$ | async as comments; else loading">
+    <ng-container *ngIf="comments.length > 0; else noContent">
+        <div class="text-primary title" (click)="toggle()">{{ toggled ? 'Hide' : 'Show' }} comments ({{ comments.length }})</div>
+        <div *ngIf="toggled">
+            <app-comment-list-item *ngFor="let comment of comments" [postId]="post.id" [comment]="comment"></app-comment-list-item>
+        </div>
+    </ng-container>
+</ng-container>
+<ng-template #loading>
+    <div class="text-secondary">Loading...</div>
+</ng-template>
+<ng-template #noContent>
+    <div class="text-secondary">There are no comments</div>
+</ng-template>

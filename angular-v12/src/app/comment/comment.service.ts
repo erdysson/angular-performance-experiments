@@ -9,17 +9,23 @@ import { Comment, CommentListServerResponse } from './comment.interface';
 
 @Injectable()
 export class CommentService {
+    protected readonly instances: Partial<{ [key: number]: Comments }> = {};
+
     constructor(protected readonly http: HttpClient) {}
 
     getForPost(id: number): Comments {
-        return new Comments(id, this.http);
+        if (!this.instances[id]) {
+            this.instances[id] = new Comments(id, this.http);
+        }
+
+        return this.instances[id] as Comments;
     }
 }
 
 export class Comments {
     readonly #comments$ = new BehaviorSubject<Comment[]>([]);
 
-    readonly comments$: Observable<Comment[]> = asObservableSource(this.#comments$.asObservable(), 'comments');
+    readonly comments$: Observable<Comment[]> = asObservableSource(this.#comments$, 'comments');
 
     protected readonly baseUrl = 'https://dummyjson.com/comments';
 

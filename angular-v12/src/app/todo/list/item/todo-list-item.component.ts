@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
+import { ComponentLifecycleLogger } from '../../../utils/component-lifecycle-logger';
 import { Todo } from '../../todo.interface';
 import { Todos, TodoService } from '../../todo.service';
 
@@ -7,9 +8,10 @@ import { Todos, TodoService } from '../../todo.service';
     selector: 'app-todo-list-item',
     templateUrl: './todo-list-item.component.html',
     styleUrls: ['./todo-list-item.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoListItemComponent implements OnInit, OnChanges, OnDestroy {
-    readonly todoServiceInstance: Todos;
+export class TodoListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
+    todoServiceInstance!: Todos;
 
     @Input()
     userId!: number;
@@ -17,32 +19,22 @@ export class TodoListItemComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
     todo!: Todo;
 
-    constructor(todoService: TodoService) {
-        this.todoServiceInstance = todoService.getForUser(this.userId);
+    constructor(private readonly todoService: TodoService) {
+        super();
     }
 
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`todo-list-item:onInit`);
+        this.init();
+
+        this.todoServiceInstance = this.todoService.getForUser(this.userId);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `todo-list-item:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`todo-list-item:onDestroy`);
+        this.destroy();
     }
 
     completeTodo(): void {

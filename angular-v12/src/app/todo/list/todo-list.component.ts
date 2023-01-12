@@ -1,40 +1,43 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { User } from '../../user/user.interface';
+import { ComponentLifecycleLogger } from '../../utils/component-lifecycle-logger';
 import { Todo } from '../todo.interface';
+import { Todos, TodoService } from '../todo.service';
 
 @Component({
     selector: 'app-todo-list',
     templateUrl: './todo-list.component.html',
     styleUrls: ['./todo-list.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoListComponent implements OnInit, OnChanges, OnDestroy {
-    @Input()
-    userId!: number;
+export class TodoListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
+    userTodoService!: Todos;
+
+    todos$!: Observable<Todo[]>;
 
     @Input()
-    todos!: Todo[];
+    user!: User;
+
+    constructor(private readonly todoService: TodoService) {
+        super();
+    }
 
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`todo-list:onInit`);
+        this.init();
+
+        this.userTodoService = this.todoService.getForUser(this.user.id);
+        this.todos$ = this.userTodoService.todos$;
+
+        this.userTodoService.getTodos();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `todo-list:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`todo-list:onDestroy`);
+        this.destroy();
     }
 }

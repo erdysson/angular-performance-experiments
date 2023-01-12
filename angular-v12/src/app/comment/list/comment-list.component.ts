@@ -1,37 +1,50 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { Post } from '../../post/post.interface';
+import { ComponentLifecycleLogger } from '../../utils/component-lifecycle-logger';
 import { Comment } from '../comment.interface';
+import { Comments, CommentService } from '../comment.service';
 
 @Component({
     selector: 'app-comment-list',
     templateUrl: './comment-list.component.html',
     styleUrls: ['./comment-list.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentListComponent implements OnInit, OnChanges, OnDestroy {
+export class CommentListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
+    postCommentService!: Comments;
+
+    comments$!: Observable<Comment[]>;
+
+    toggled = false;
+
     @Input()
-    comments!: Comment[];
+    post!: Post;
+
+    constructor(private readonly commentService: CommentService) {
+        super();
+    }
 
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`comment-list:onInit`);
+        this.init();
+
+        this.postCommentService = this.commentService.getForPost(this.post.id);
+
+        this.comments$ = this.postCommentService.comments$;
+
+        this.postCommentService.getComments();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `comment-list:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`comment-list:onDestroy`);
+        this.destroy();
+    }
+
+    toggle(): void {
+        this.toggled = !this.toggled;
     }
 }

@@ -38,4 +38,16 @@
     .comments {
         margin-top: var(--margin-container-medium);
     }
+
+    .actions {
+        margin: var(--margin-container-medium) 0;
+
+        & > * {
+            margin-right: var(--margin-container-large);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 }

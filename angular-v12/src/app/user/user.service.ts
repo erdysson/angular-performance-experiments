@@ -11,15 +11,15 @@ import { User, UserListServerResponse } from './user.interface';
 export class UserService {
     readonly #users$ = new BehaviorSubject<User[]>([]);
 
-    readonly users$: Observable<User[]> = asObservableSource(this.#users$.asObservable(), 'users');
+    readonly users$: Observable<User[]> = asObservableSource(this.#users$, 'users');
 
     protected readonly baseUrl = 'https://dummyjson.com/users';
 
     constructor(protected readonly http: HttpClient) {}
 
-    getUsers(limit = 5): void {
+    getUsers(limit = 10, skip = 0): void {
         this.http
-            .get<UserListServerResponse>(`${this.baseUrl}?limit=${limit}`)
+            .get<UserListServerResponse>(`${this.baseUrl}?limit=${limit}&skip=${skip}`)
             .subscribe((users) => this.#users$.next(users.users.map((user) => mergeAndUpdate(user, {}))));
     }
 
@@ -31,9 +31,7 @@ export class UserService {
             );
     }
 
-    delete(userId: number): void {
-        this.http
-            .delete<User>(`${this.baseUrl}/${userId}`)
-            .subscribe(() => this.#users$.next(this.#users$.value.filter((user) => user.id !== userId)));
+    deleteUser(userId: number): void {
+        this.#users$.next(this.#users$.value.filter((user) => user.id !== userId));
     }
 }

@@ -1,21 +1,17 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
-import { Comment } from '../../../comment/comment.interface';
-import { Comments, CommentService } from '../../../comment/comment.service';
+import { ComponentLifecycleLogger } from '../../../utils/component-lifecycle-logger';
 import { Post } from '../../post.interface';
+import { Posts, PostService } from '../../post.service';
 
 @Component({
     selector: 'app-post-list-item',
     templateUrl: './post-list-item.component.html',
     styleUrls: ['./post-list-item.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PostListItemComponent implements OnInit, OnChanges, OnDestroy {
-    postCommentService!: Comments;
-
-    comments$!: Observable<Comment[]>;
-
-    toggled = false;
+export class PostListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
+    userPostService!: Posts;
 
     @Input()
     userId!: number;
@@ -23,38 +19,29 @@ export class PostListItemComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
     post!: Post;
 
-    constructor(private readonly commentService: CommentService) {}
+    constructor(private readonly postService: PostService) {
+        super();
+    }
 
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`post-list-item:onInit`);
+        this.init();
 
-        this.postCommentService = this.commentService.getForPost(this.post.id);
-        this.comments$ = this.postCommentService.comments$;
-
-        this.postCommentService.getComments();
+        this.userPostService = this.postService.getForUser(this.userId);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `post-list-item:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`post-list-item:onDestroy`);
+        this.destroy();
     }
 
-    toggle(): void {
-        this.toggled = !this.toggled;
+    refresh(): void {
+        this.userPostService.getPost(this.post.id);
+    }
+
+    delete(): void {
+        this.userPostService.deletePost(this.post.id);
     }
 }

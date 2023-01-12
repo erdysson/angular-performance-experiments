@@ -1,40 +1,44 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { User } from '../../user/user.interface';
+import { ComponentLifecycleLogger } from '../../utils/component-lifecycle-logger';
 import { Post } from '../post.interface';
+import { Posts, PostService } from '../post.service';
 
 @Component({
     selector: 'app-post-list',
     templateUrl: './post-list.component.html',
     styleUrls: ['./post-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PostListComponent implements OnInit, OnChanges, OnDestroy {
-    @Input()
-    userId!: number;
+export class PostListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
+    userPostService!: Posts;
+
+    posts$!: Observable<Post[]>;
 
     @Input()
-    posts!: Post[];
+    user!: User;
+
+    constructor(private readonly postService: PostService) {
+        super();
+    }
 
     ngOnInit(): void {
-        // eslint-disable-next-line no-console
-        console.log(`post-list:onInit`);
+        this.init();
+
+        this.userPostService = this.postService.getForUser(this.user.id);
+
+        this.posts$ = this.userPostService.posts$;
+
+        this.userPostService.getPosts();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        for (const change of Object.keys(changes)) {
-            const object = changes[change];
-            // eslint-disable-next-line no-console
-            console.log(
-                `post-list:onChanges: [${change}]`,
-                'has changed from',
-                object.previousValue,
-                'to',
-                object.currentValue,
-            );
-        }
+        this.changes(changes);
     }
 
     ngOnDestroy(): void {
-        // eslint-disable-next-line no-console
-        console.log(`post-list:onDestroy`);
+        this.destroy();
     }
 }

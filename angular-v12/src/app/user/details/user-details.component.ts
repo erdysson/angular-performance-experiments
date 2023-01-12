@@ -7,7 +7,7 @@ import { User } from '../user.interface';
     selector: 'app-user-details',
     templateUrl: './user-details.component.html',
     styleUrls: ['./user-details.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetailsComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     @Input()

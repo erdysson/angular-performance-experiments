@@ -8,7 +8,7 @@ import { UserService } from '../../user.service';
     selector: 'app-user-list-item',
     templateUrl: './user-list-item.component.html',
     styleUrls: ['./user-list-item.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     tab = 'details';

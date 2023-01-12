@@ -8,7 +8,7 @@ import { Todos, TodoService } from '../../todo.service';
     selector: 'app-todo-list-item',
     templateUrl: './todo-list-item.component.html',
     styleUrls: ['./todo-list-item.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     todoServiceInstance!: Todos;

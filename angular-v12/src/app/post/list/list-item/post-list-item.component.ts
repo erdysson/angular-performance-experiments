@@ -8,7 +8,7 @@ import { Posts, PostService } from '../../post.service';
     selector: 'app-post-list-item',
     templateUrl: './post-list-item.component.html',
     styleUrls: ['./post-list-item.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     userPostService!: Posts;

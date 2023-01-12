@@ -10,7 +10,7 @@ import { Comments, CommentService } from '../comment.service';
     selector: 'app-comment-list',
     templateUrl: './comment-list.component.html',
     styleUrls: ['./comment-list.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     postCommentService!: Comments;

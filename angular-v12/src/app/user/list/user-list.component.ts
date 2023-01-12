@@ -8,7 +8,7 @@ import { UserService } from '../user.service';
     selector: 'app-user-list',
     templateUrl: './user-list.component.html',
     styleUrls: ['./user-list.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     readonly users$ = this.userService.users$;

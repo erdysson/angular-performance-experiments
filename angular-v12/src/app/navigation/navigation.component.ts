@@ -6,7 +6,7 @@ import { ComponentLifecycleLogger } from '../utils/component-lifecycle-logger';
     selector: 'app-navigation',
     templateUrl: './navigation.component.html',
     styleUrls: ['./navigation.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {

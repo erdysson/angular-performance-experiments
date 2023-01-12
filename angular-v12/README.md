@@ -36,7 +36,7 @@ npm run serve
 
 #### Step 5
 
-> `shareReply` & `distinctUntilChanged` with observables
+> `@rx-angular/state` for component state
 
 #### Step 6
 

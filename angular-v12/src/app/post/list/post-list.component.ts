@@ -31,6 +31,8 @@ export class PostListComponent extends ComponentLifecycleLogger implements OnIni
 
         this.posts$ = this.userPostService.posts$;
 
+        this.posts$.subscribe(console.log);
+
         this.userPostService.getPosts();
     }
 

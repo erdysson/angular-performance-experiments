@@ -1,2 +1,12 @@
 <div class="change-detection-log" appChangeDetectionLogger component="todo-list"></div>
-<app-todo-list-item class="list-item" *ngFor="let todo of todos$ | async; trackBy: trackById" [userId]="user.id" [todo]="todo"></app-todo-list-item>
+<ng-container *rxLet="todos$; let todos; parent: false; patchZone: false; suspense: loading">
+    <ng-container *rxIf="todos.length > 0; else noContent">
+        <app-todo-list-item class="list-item" *rxFor="let todo of todos$; parent: false, patchZone: false, trackBy: trackById" [userId]="user.id" [todo]="todo"></app-todo-list-item>
+    </ng-container>
+</ng-container>
+<ng-template #loading>
+    <div class="text-secondary">Loading...</div>
+</ng-template>
+<ng-template #noContent>
+    <div class="text-secondary">There are no todos</div>
+</ng-template>

@@ -54,6 +54,7 @@ export class Posts {
     }
 
     deletePost(postId: number): void {
+        console.log('delete post', postId);
         this.#posts$.next(this.#posts$.value.filter((post) => post.id !== postId));
     }
 }

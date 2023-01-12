@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 
 import { ComponentLifecycleLogger } from '../../utils/component-lifecycle-logger';
 import { User } from '../user.interface';

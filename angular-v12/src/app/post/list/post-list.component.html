@@ -1,7 +1,7 @@
 <div class="change-detection-log" appChangeDetectionLogger component="post-list"></div>
-<ng-container *ngIf="posts$ | async as posts; else loading">
-    <ng-container *ngIf="posts.length > 0; else noContent">
-        <app-post-list-item *ngFor="let post of posts; trackBy: trackById" [userId]="user.id" [post]="post"></app-post-list-item>
+<ng-container *rxLet="posts$; let posts; parent: false; patchZone: false; suspense: loading">
+    <ng-container *rxIf="posts.length > 0; else noContent">
+        <app-post-list-item *rxFor="let post of posts; parent: false; patchZone: false; trackBy: trackById" [userId]="user.id" [post]="post"></app-post-list-item>
     </ng-container>
 </ng-container>
 <ng-template #loading>

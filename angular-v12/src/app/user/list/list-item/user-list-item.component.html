@@ -12,19 +12,17 @@
         <span class="text text-primary" (click)="delete($event)">Delete</span>
     </div>
 </div>
-<!--<div *ngIf="toggled">-->
-<div [ngStyle]="{display: toggled ? 'block' : 'none'}">
-    <div class="tabs">
-        <span class="tab text" [class.active]="tab === 'details'" (click)="switchTab('details')">Details</span>
-        <span class="tab text" [class.active]="tab === 'todos'" (click)="switchTab('todos')">Todos</span>
-        <span class="tab text" [class.active]="tab === 'posts'" (click)="switchTab('posts')">Posts</span>
-    </div>
-    <div>
-        <app-user-details [ngStyle]="{display: tab === 'details' ? 'block': 'none'}" [user]="user"></app-user-details>
-<!--        <app-user-details *ngIf="tab === 'details'" [user]="user"></app-user-details>-->
-        <app-todo-list [ngStyle]="{display: tab === 'todos' ? 'block': 'none'}" [user]="user"></app-todo-list>
-<!--        <app-todo-list *ngIf="tab === 'todos'" [user]="user"></app-todo-list>-->
-        <app-post-list [ngStyle]="{display: tab === 'posts' ? 'block': 'none'}" [user]="user"></app-post-list>
-<!--        <app-post-list *ngIf="tab === 'posts'" [user]="user"></app-post-list>-->
-    </div>
+<div *rxLet="toggled$; let toggled; parent: false; patchZone: false;" [ngStyle]="{display: toggled ? 'block' : 'none'}">
+    <ng-container *rxLet="tab$; let tab; parent: false; patchZone: false;">
+        <div class="tabs">
+            <span class="tab text" [class.active]="tab === 'details'" (click)="switchTab('details')">Details</span>
+            <span class="tab text" [class.active]="tab === 'todos'" (click)="switchTab('todos')">Todos</span>
+            <span class="tab text" [class.active]="tab === 'posts'" (click)="switchTab('posts')">Posts</span>
+        </div>
+        <div>
+            <app-user-details [ngStyle]="{display: tab === 'details' ? 'block': 'none'}" [user]="user"></app-user-details>
+            <app-todo-list [ngStyle]="{display: tab === 'todos' ? 'block': 'none'}" [user]="user"></app-todo-list>
+            <app-post-list [ngStyle]="{display: tab === 'posts' ? 'block': 'none'}" [user]="user"></app-post-list>
+        </div>
+    </ng-container>
 </div>

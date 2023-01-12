@@ -37,11 +37,6 @@ npm run serve
 
 > `@rx-angular/state` for component state
 
-#### Step 6
-
-> `component state` with `@rx-angular/state`
-
-
 #### Step 7 - Bonus
 
 > `[unpatch]` directive and disabling `zone-flags`

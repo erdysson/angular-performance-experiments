@@ -2,7 +2,7 @@
 <div class="todo-list-item-wrapper">
     <span class="text text-secondary" [class.completed]="todo.completed">{{ todo.id }} {{ todo.todo }}</span>
     <span class="actions">
-        <span class="text text-primary pointer" *ngIf="!todo.completed" (click)="completeTodo()">Complete</span>
-        <span class="text text-primary pointer" (click)="deleteTodo()">Delete</span>
+        <span class="text text-primary pointer" *ngIf="!todo.completed" [unpatch]="['click']" (click)="completeTodo()">Complete</span>
+        <span class="text text-primary pointer" [unpatch]="['click']" (click)="deleteTodo()">Delete</span>
     </span>
 </div>

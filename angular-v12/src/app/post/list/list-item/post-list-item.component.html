@@ -1,8 +1,8 @@
 <div class="change-detection-log" appChangeDetectionLogger component="post-list-item"></div>
-<div class="title text-secondary"><span>{{ post.title }}</span>&nbsp;<span title="Reactions">[{{ post.reactions }}]</span></div>
+<div class="title text-secondary"><span>{{ post.id }} {{ post.title }}</span>&nbsp;<span title="Reactions">reactions: [{{ post.reactions }}]</span></div>
 <cite class="text text-secondary">{{ post.body }}</cite>
 <div class="tags">
-    <span class="tag" *ngFor="let tag of post.tags">{{ tag }}</span>
+    <span class="tag" *rxFor="let tag of post.tags;">{{ tag }}</span>
 </div>
 <div class="text-primary actions">
     <span (click)="refresh()">Refresh</span>

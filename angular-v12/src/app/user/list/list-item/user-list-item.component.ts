@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 import { ComponentLifecycleLogger } from '../../../utils/component-lifecycle-logger';
 import { User } from '../../user.interface';
@@ -11,9 +12,9 @@ import { UserService } from '../../user.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListItemComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
-    tab = 'details';
+    readonly toggled$ = new BehaviorSubject(false);
 
-    toggled = false;
+    readonly tab$ = new BehaviorSubject('details');
 
     @Input()
     user!: User;
@@ -35,11 +36,11 @@ export class UserListItemComponent extends ComponentLifecycleLogger implements O
     }
 
     switchTab(tab: string): void {
-        this.tab = tab;
+        this.tab$.next(tab);
     }
 
     toggle(): void {
-        this.toggled = !this.toggled;
+        this.toggled$.next(!this.toggled$.value);
     }
 
     refresh(event: MouseEvent): void {

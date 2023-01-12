@@ -1,13 +1,14 @@
 <div class="change-detection-log" appChangeDetectionLogger component="comment-list"></div>
 <ng-container *rxLet="comments$; let comments; suspense: loading">
     <ng-container *rxIf="comments.length > 0; else noContent">
-        <div class="text-primary title" (click)="toggle()">{{ toggled ? 'Hide' : 'Show' }} comments ({{ comments.length }})</div>
-        <div *rxIf="toggled">
-            <app-comment-list-item *rxFor="let comment of comments; parent: false, patchZone: false, trackBy: trackById" [postId]="post.id" [comment]="comment"></app-comment-list-item>
-        </div>
+        <ng-container *rxLet="toggled$; let toggled; parent: false; patchZone: false;">
+            <div class="text-primary title" [unpatch]="['click']" (click)="toggle()">{{ toggled ? 'Hide' : 'Show' }} comments ({{ comments.length }})</div>
+            <div [ngStyle]="{display: toggled ? 'block' : 'none'}">
+                <app-comment-list-item *rxFor="let comment of comments; parent: false, patchZone: false, trackBy: trackById" [postId]="post.id" [comment]="comment"></app-comment-list-item>
+            </div>
+        </ng-container>
     </ng-container>
 </ng-container>
-
 <ng-template #loading>
     <div class="text-secondary">Loading...</div>
 </ng-template>

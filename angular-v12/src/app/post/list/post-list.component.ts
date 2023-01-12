@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { RxState } from '@rx-angular/state';
 import { Observable } from 'rxjs';
 
 import { User } from '../../user/user.interface';
@@ -11,6 +12,7 @@ import { Posts, PostService } from '../post.service';
     templateUrl: './post-list.component.html',
     styleUrls: ['./post-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [RxState],
 })
 export class PostListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     userPostService!: Posts;
@@ -20,7 +22,7 @@ export class PostListComponent extends ComponentLifecycleLogger implements OnIni
     @Input()
     user!: User;
 
-    constructor(private readonly postService: PostService) {
+    constructor(private readonly state: RxState<{ posts: Post[] }>, private readonly postService: PostService) {
         super();
     }
 
@@ -29,9 +31,9 @@ export class PostListComponent extends ComponentLifecycleLogger implements OnIni
 
         this.userPostService = this.postService.getForUser(this.user.id);
 
-        this.posts$ = this.userPostService.posts$;
+        this.state.connect('posts', this.userPostService.posts$);
 
-        this.posts$.subscribe(console.log);
+        this.posts$ = this.state.select('posts');
 
         this.userPostService.getPosts();
     }

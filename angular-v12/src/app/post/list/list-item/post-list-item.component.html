@@ -5,8 +5,8 @@
     <span class="tag" *rxFor="let tag of post.tags;">{{ tag }}</span>
 </div>
 <div class="text-primary actions">
-    <span (click)="refresh()">Refresh</span>
-    <span (click)="delete()">Delete</span>
+    <span [unpatch]="['click']" (click)="refresh()">Refresh</span>
+    <span [unpatch]="['click']" (click)="delete()">Delete</span>
 </div>
 <div>
     <app-comment-list [post]="post"></app-comment-list>

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
+import { RxState } from '@rx-angular/state';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Post } from '../../post/post.interface';
 import { ComponentLifecycleLogger } from '../../utils/component-lifecycle-logger';
@@ -11,19 +12,27 @@ import { Comments, CommentService } from '../comment.service';
     templateUrl: './comment-list.component.html',
     styleUrls: ['./comment-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [RxState],
 })
 export class CommentListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
+    #toggled$ = new BehaviorSubject(false);
+
     postCommentService!: Comments;
 
     comments$!: Observable<Comment[]>;
 
-    toggled = false;
+    toggled$ = this.state.select('toggled');
 
     @Input()
     post!: Post;
 
-    constructor(private readonly commentService: CommentService) {
+    constructor(
+        private readonly state: RxState<{ comments: Comment[]; toggled: boolean }>,
+        private readonly commentService: CommentService,
+    ) {
         super();
+
+        this.state.connect('toggled', this.#toggled$.asObservable());
     }
 
     ngOnInit(): void {
@@ -31,7 +40,9 @@ export class CommentListComponent extends ComponentLifecycleLogger implements On
 
         this.postCommentService = this.commentService.getForPost(this.post.id);
 
-        this.comments$ = this.postCommentService.comments$;
+        this.state.connect('comments', this.postCommentService.comments$);
+
+        this.comments$ = this.state.select('comments');
 
         this.postCommentService.getComments();
     }
@@ -45,7 +56,7 @@ export class CommentListComponent extends ComponentLifecycleLogger implements On
     }
 
     toggle(): void {
-        this.toggled = !this.toggled;
+        this.#toggled$.next(!this.#toggled$.value);
     }
 
     trackById(index: number, comment: Comment): number {

@@ -20,6 +20,7 @@
         "@angular/platform-browser-dynamic": "^12.2.17",
         "@angular/router": "^12.2.17",
         "@rx-angular/cdk": "1.0.0-rc.4",
+        "@rx-angular/state": "1.7.0",
         "@rx-angular/template": "1.0.0-rc.5",
         "rxjs": "~7.3.0",
         "tslib": "^2.0.0",

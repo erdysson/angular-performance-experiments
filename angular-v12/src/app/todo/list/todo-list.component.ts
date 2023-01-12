@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { RxState } from '@rx-angular/state';
 import { Observable } from 'rxjs';
 
 import { User } from '../../user/user.interface';
@@ -11,6 +12,7 @@ import { Todos, TodoService } from '../todo.service';
     templateUrl: './todo-list.component.html',
     styleUrls: ['./todo-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [RxState],
 })
 export class TodoListComponent extends ComponentLifecycleLogger implements OnInit, OnChanges, OnDestroy {
     userTodoService!: Todos;
@@ -20,7 +22,7 @@ export class TodoListComponent extends ComponentLifecycleLogger implements OnIni
     @Input()
     user!: User;
 
-    constructor(private readonly todoService: TodoService) {
+    constructor(private readonly state: RxState<{ todos: Todo[] }>, private readonly todoService: TodoService) {
         super();
     }
 
@@ -28,7 +30,9 @@ export class TodoListComponent extends ComponentLifecycleLogger implements OnIni
         this.init();
 
         this.userTodoService = this.todoService.getForUser(this.user.id);
-        this.todos$ = this.userTodoService.todos$;
+
+        this.state.connect('todos', this.userTodoService.todos$);
+        this.todos$ = this.state.select('todos');
 
         this.userTodoService.getTodos();
     }

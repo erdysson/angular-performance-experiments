@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ForModule } from '@rx-angular/template/for';
 import { IfModule } from '@rx-angular/template/if';
 import { LetModule } from '@rx-angular/template/let';
+import { UnpatchModule } from '@rx-angular/template/unpatch';
 
 import { ChangeDetectionLoggerModule } from '../change-detection-logger/change-detection-logger.module';
 
@@ -11,7 +12,7 @@ import { CommentListComponent } from './list/comment-list.component';
 import { CommentListItemComponent } from './list/list-item/comment-list-item.component';
 
 @NgModule({
-    imports: [CommonModule, ChangeDetectionLoggerModule, LetModule, ForModule, IfModule],
+    imports: [CommonModule, ChangeDetectionLoggerModule, LetModule, ForModule, IfModule, UnpatchModule],
     declarations: [CommentListComponent, CommentListItemComponent],
     exports: [CommentListComponent],
     providers: [CommentService],

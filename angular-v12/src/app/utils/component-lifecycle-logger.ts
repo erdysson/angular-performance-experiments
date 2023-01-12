@@ -1,7 +1,7 @@
 import { SimpleChanges } from '@angular/core';
 
 export class ComponentLifecycleLogger {
-    turnedOff: string[] = ['all'];
+    turnedOff: string[] = [''];
 
     get className(): string {
         return this.constructor.name;

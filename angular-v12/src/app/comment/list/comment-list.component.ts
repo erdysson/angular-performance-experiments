@@ -47,4 +47,8 @@ export class CommentListComponent extends ComponentLifecycleLogger implements On
     toggle(): void {
         this.toggled = !this.toggled;
     }
+
+    trackById(index: number, comment: Comment): number {
+        return comment.id;
+    }
 }

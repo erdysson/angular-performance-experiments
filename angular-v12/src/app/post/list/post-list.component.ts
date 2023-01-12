@@ -41,4 +41,8 @@ export class PostListComponent extends ComponentLifecycleLogger implements OnIni
     ngOnDestroy(): void {
         this.destroy();
     }
+
+    trackById(index: number, post: Post): number {
+        return post.id;
+    }
 }

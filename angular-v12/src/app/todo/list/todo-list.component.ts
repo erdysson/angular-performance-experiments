@@ -40,4 +40,8 @@ export class TodoListComponent extends ComponentLifecycleLogger implements OnIni
     ngOnDestroy(): void {
         this.destroy();
     }
+
+    trackById(index: number, todo: Todo): number {
+        return todo.id;
+    }
 }

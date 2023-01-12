@@ -29,7 +29,6 @@ npm run serve
 
 > `*ngFor` with trackBy
 
-
 #### Step 4
 
 > `@rx-angular/cdk` for `*rxIf`, `*rxFor` and `*rxLet` directives

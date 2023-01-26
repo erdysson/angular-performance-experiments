@@ -1,0 +1,27 @@
+import { zoneConfig } from '@rx-angular/cdk/zone-configurations';
+
+zoneConfig.useUnpatchedPassiveScrollEvents();
+zoneConfig.unpatchXHR();
+zoneConfig.global.disable.blocking();
+zoneConfig.global.disable.canvas();
+zoneConfig.global.disable.crypto();
+zoneConfig.global.disable.customElements();
+zoneConfig.global.disable.defineProperty();
+zoneConfig.global.disable.DISABLE_WRAPPING_UNCAUGHT_PROMISE_REJECTION();
+zoneConfig.global.disable.EventEmitter();
+zoneConfig.global.disable.EventTarget();
+zoneConfig.global.disable.EventTargetLegacy();
+zoneConfig.global.disable.FileReader();
+zoneConfig.global.disable.fs();
+zoneConfig.global.disable.geolocation();
+zoneConfig.runtime.disable.ignoreConsoleErrorUncaughtError();
+zoneConfig.global.disable.IntersectionObserver();
+zoneConfig.global.disable.MutationObserver();
+zoneConfig.global.disable.nextTick();
+zoneConfig.global.disable.node_timers();
+zoneConfig.global.disable.on_property();
+zoneConfig.global.disable.registerElement();
+zoneConfig.global.disable.requestAnimationFrame();
+zoneConfig.global.disable.timers();
+zoneConfig.global.disable.XHR();
+// zoneConfig.global.disable.ZoneAwarePromise();
